@@ -1,54 +1,32 @@
-# Class Database
-
-## Submission
-
-Below you will find a set of tasks for you to complete to set up a databases of students and mentors.
-
-To submit this homework write the correct commands for each question here:
-
-```sql
-
-
-```
-
-When you have finished all of the questions - open a pull request with your answers to the `Databases-Homework` repository.
-
-## Task
-
-1. Create a new database called `cyf_classes` (hint: use `createdb` in the terminal)
-```sql
-CREATEDB cyf_classes
-
-```
-2. Create a new table `mentors`, for each mentor we want to save their name, how many years they lived in Glasgow, their address and their favourite programming language.
-```sql
 CREATE TABLE mentors (
    id              SERIAL PRIMARY KEY,
    name            VARCHAR (120) NOT NULL,
-   years_Lived      INT,
-   address         VARCHAR (120),
+   years_Lived     INT  NOT NULL,
+   address         VARCHAR (120) NOT NULL, 
    prog_Language    VARCHAR (50)
 
 )
 
-```
-3. Insert 5 mentors in the `mentors` table (you can make up the data, it doesn't need to be accurate ;-)).
-```sql
-INSERT INTO mentors (name) VALUES ('edward'),('amanda'),('yonnah'),('abdul'),('tomy')
+INSERT INTO mentors (name, years_Lived , address, prog_Language)
+VALUES ('edward', 8 , 'fake address 1', 'JavaScript'),
+('amanda', 5 , 'fake address ', 'Java'),
+('yonnah', 12 , 'fake address 3', 'PHP'),
+('abdul', 2 , 'fake address 4', 'python'),
+('tomy', 6 , 'fake address 5', 'C++')
 
-```
-4. Create a new table `students`, for each student we want to save their name, address and if they have graduated from Code Your Future.
-```sql
+
+SELECT * FROM mentors 
+
+-- student table
 CREATE TABLE  students (
    id                   SERIAL PRIMARY KEY,
    name                 VARCHAR (120) NOT NULL,
-   address              VARCHAR (120),
-   is_cyf_graduated     VARCHAR (20)
+   address              VARCHAR (120) NOT NULL,
+   is_cyf_graduated     VARCHAR (20) NOT NULL
 )
+SELECT * FROM students  
 
-```
-5. Insert 10 students in the `students` table.
-```sql
+-- student table INSERT DATA
 INSERT INTO students (name, address , is_cyf_graduated)
 VALUES ('rana', 'addressRana-1', 'yes'), 
 ('elmira', 'addressElmira-2', 'yes'),
@@ -61,56 +39,50 @@ VALUES ('rana', 'addressRana-1', 'yes'),
 ('luisa', 'addressLS-9', 'yes'),
 ('tom', 'addressTom-10', 'NO')
 
-```
-6. Verify that the data you created for mentors and students are correctly stored in their respective tables (hint: use a `select` SQL statement).
+SELECT * FROM students
 
-```sql
-SELECT name , address FROM students
-
-```
-7. Create a new `classes` table to record the following information:
-
-   - A class has a leading mentor
-   - A class has a topic (such as Javascript, NodeJS)
-   - A class is taught at a specific date and at a specific location
-
-```sql
+-- classes table
 CREATE TABLE classes (
    id       SERIAL PRIMARY KEY,
-   leading_mentor  VARCHAR (30),
+   leading_mentor_id   INT REFERENCES mentors (id),
    topic     VARCHAR (80) NOT NULL,
    date      DATE NOT NULL,
    location  VARCHAR (120)
 
 )
 
-```
+INSERT INTO classes (leading_mentor_id, topic, date, location)
+VALUES ( '1', 'database', '30-10-2021', 'Glasgow'),
+( '2', 'database', '30-01-2020', 'London'),
+( '3', 'database', '20-5-2021','Glasgow'),
+( '4', 'database', '10-10-2021','Glasgow'),
+( '5', 'database', '15-08-2019','Barcelona')
 
-8. Insert a few classes in the `classes` table
-```sql
-INSERT INTO classes (leading_mentor, topic, date)
-VALUE ( 'Edward', 'database', '30-10-2021')
-```
-9. We now want to store who among the students attends a specific class. How would you store that? Come up with a solution and insert some data if you model this as a new table.
-```sql
 
+SELECT * FROM classes
+
+-- Attended Class table
 CREATE TABLE attended_class (
-   id   SERIAL PRIMARY KEY,
-   classId      INT REFERENCES classes (id) NOT NULL,
-   classTopic   VARCHAR REFERENCES classes (topic),
-   studentId    INT REFERENCES students(id) NOT NULL,
-   studentName  VARCHAR REFERENCES students(name)  NOT NULL
+   id           SERIAL PRIMARY KEY,
+   classId	    INT REFERENCES classes (id) NOT NULL,
+   studentId    INT REFERENCES students(id) NOT NULL
 )
 
-```
-10. Answer the following questions using a `select` SQL statement:
-    - Retrieve all the mentors who lived more than 5 years in Glasgow
-    - Retrieve all the mentors whose favourite language is Javascript
-    - Retrieve all the students who are CYF graduates
-    - Retrieve all the classes taught before June this year
-    - Retrieve all the students (retrieving student ids only is fine) who attended the Javascript class (or any other class that you have in the `classes` table).
-
 ```sql
+-- Retrieve all the mentors who lived more than 5 years in Glasgow
+SELECT * FROM  mentors WHERE years_Lived > 5
 
+-- Retrieve all the mentors whose favourite language is Javascript
+SELECT * FROM  mentors WHERE prog_Language = 'JavaScript'
+
+-- Retrieve all the students who are CYF graduates
+SELECT * FROM students WHERE is_cyf_graduated = 'yes'
+
+-- Retrieve all the classes taught before June this year
+select * classes WHERE date < '2021-06-01'
+
+-- Retrieve all the students (retrieving student ids only is fine) who attended the Javascript class (or any other class that you have in the `classes` table).
 
 ```
+
+
