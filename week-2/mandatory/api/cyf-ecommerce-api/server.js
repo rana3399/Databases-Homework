@@ -42,8 +42,9 @@ function getSuppliersFunc(req, res){
     })
 }
 
+//show products and suppliers name only
 function getProductsFunc (req, res ){
-    myPool.query('SELECT * FROM products', function(error, result){
+    myPool.query('SELECT product_name, supplier_name FROM products p INNER JOIN suppliers s ON p.supplier_id = s.id', function(error, result){
         res.json(result.rows)
 
     });
