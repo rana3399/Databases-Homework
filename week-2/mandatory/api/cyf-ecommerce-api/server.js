@@ -2,14 +2,6 @@ const express =  require("express");
 const app = express();
 const {Pool} = require('pg');
 
-//connection credentials for Week1_Class/cyf_hotels
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Week1_Class',
-    password: 'Pro@450',
-    port : 5432
-})
 
 //connection credentials for Week2_homeWork
 const myPool = new Pool({
@@ -20,11 +12,6 @@ const myPool = new Pool({
     port : 5432
 })
 
-app.get("/hotels", function(req, res) {
-    pool.query('SELECT * FROM hotels', (error, result) => {
-        res.json(result.rows);
-    });
-});
 
 //show all the customers 
 function getCustomersFunc(req, res){
@@ -37,9 +24,13 @@ function getCustomersFunc(req, res){
 //show all the suppliers 
 function getSuppliersFunc(req, res){
     myPool.query('SELECT * FROM suppliers', (error, result)=> {
-        res.json(result.rows);
-
-    })
+        if(error){
+            res.status(500).send('sorry there is a problem!')
+        }else{
+            res.json(result.rows);
+        }
+       
+    });
 }
 
 //show products and suppliers name only

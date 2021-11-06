@@ -17,7 +17,9 @@ SELECT * FROM products WHERE product_name LIKE '%socks%';
 SELECT product_name, supplier_name FROM products p INNER JOIN suppliers s ON p.supplier_id = s.id
 
 --5. Retrieve the 5 most expensive products ??
-SELECT Max(p.unit_price) AS maximun_prices FROM products p
+SELECT * Max(p.unit_price) AS maximun_prices FROM products p LIMIT 5;
+SELECT * FROM products P ORDER BY DESC p.unit_price;
+
 
 
 --6. Retrieve all the products with their corresponding suppliers. The result 
