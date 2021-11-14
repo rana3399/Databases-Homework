@@ -85,6 +85,7 @@ INSERT INTO orders (order_date, order_reference, customer_id) VALUES ('2019-07-2
 INSERT INTO orders (order_date, order_reference, customer_id) VALUES ('2019-07-24', 'ORD009', 5);
 INSERT INTO orders (order_date, order_reference, customer_id) VALUES ('2019-05-10', 'ORD010', 5);
 
+INSERT INTO orders (order_date, order_reference) VALUES ('2050-05-10', '50D010');
 
 INSERT INTO order_items (order_id, product_id, quantity) VALUES(1, 2, 1);
 INSERT INTO order_items (order_id, product_id, quantity) VALUES(1, 7, 5);

@@ -16,6 +16,7 @@ SELECT * FROM products WHERE unit_price >100
 --4. Retrieve all the products whose name contains the word `socks`
 SELECT * FROM products WHERE product_name LIKE '%socks%';
 
+
 SELECT product_name, supplier_name FROM products p INNER JOIN suppliers s ON p.supplier_id = s.id
 
 --5. Retrieve the 5 most expensive products ??
@@ -83,4 +84,8 @@ SELECT c.name as customers_bought_from_China
         INNER JOIN products p ON p.id = oItems.product_id
         INNER JOIN suppliers s ON s.id = p.supplier_id
             WHERE s.country = 'China';
+
+--
+INSERT INTO products (product_name, unit_price, supplier_id) 
+        VALUES ('Mobile Phone', 20, 1) returning id;
 
