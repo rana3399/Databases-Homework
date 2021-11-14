@@ -2,6 +2,8 @@ SELECT * FROM customers;
 SELECT * FROM orders;
 SELECT * FROM products;
 
+INSERT INTO orders (order_date, order_reference) VALUES ('2050-05-10', '50D010');
+
 INSERT INTO customers (name) VALUES ('Rana Ahmed')
 
 --1. Retrieve all the customers names and addresses who lives in United States
@@ -87,5 +89,5 @@ SELECT c.name as customers_bought_from_China
 
 --
 INSERT INTO products (product_name, unit_price, supplier_id) 
-        VALUES ('Mobile Phone', 20, 1) returning id;
+        VALUES ('Samsung Phone', 20, 1) returning id;
 
