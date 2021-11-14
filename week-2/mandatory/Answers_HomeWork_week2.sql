@@ -2,6 +2,8 @@ SELECT * FROM customers;
 SELECT * FROM orders;
 SELECT * FROM products;
 
+INSERT INTO customers (name) VALUES ('Rana Ahmed')
+
 --1. Retrieve all the customers names and addresses who lives in United States
 SELECT name, address FROM customers WHERE country = 'United States';
 
@@ -81,3 +83,4 @@ SELECT c.name as customers_bought_from_China
         INNER JOIN products p ON p.id = oItems.product_id
         INNER JOIN suppliers s ON s.id = p.supplier_id
             WHERE s.country = 'China';
+

@@ -45,6 +45,7 @@ INSERT INTO customers (name, address, city, country) VALUES ('Britanney Kirkland
 INSERT INTO customers (name, address, city, country) VALUES ('Amber Tran','6967 Ac Road','Villafranca Asti','United States');
 INSERT INTO customers (name, address, city, country) VALUES ('Edan Higgins','Ap #840-3255 Tincidunt St.','Arles','United States');
 INSERT INTO customers (name, address, city, country) VALUES ('Quintessa Austin','597-2737 Nunc Rd.','Saint-Marc','United Kingdom');
+INSERT INTO customers (name) VALUES ('rana ahmed');
 
 INSERT INTO suppliers (supplier_name, country) VALUES ('Amazon', 'United States');
 INSERT INTO suppliers (supplier_name, country) VALUES ('Taobao', 'China');
@@ -83,6 +84,7 @@ INSERT INTO orders (order_date, order_reference, customer_id) VALUES ('2019-04-0
 INSERT INTO orders (order_date, order_reference, customer_id) VALUES ('2019-07-23', 'ORD008', 5);
 INSERT INTO orders (order_date, order_reference, customer_id) VALUES ('2019-07-24', 'ORD009', 5);
 INSERT INTO orders (order_date, order_reference, customer_id) VALUES ('2019-05-10', 'ORD010', 5);
+
 
 INSERT INTO order_items (order_id, product_id, quantity) VALUES(1, 2, 1);
 INSERT INTO order_items (order_id, product_id, quantity) VALUES(1, 7, 5);
