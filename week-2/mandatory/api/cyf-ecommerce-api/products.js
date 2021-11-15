@@ -1,5 +1,5 @@
 const {Pool} = require('pg');
-const secret = require("./secret.json")
+const secret = require("./secret.json");
 const myPool = new Pool(secret);
 
 //Create a new product
@@ -38,14 +38,14 @@ const getProductsFunc = async (req, res )=>{
     
         if(searchName){
             const query = `SELECT * FROM products WHERE product_name LIKE '%${searchName}%'`;
-            const result = await myPool.query(query)
-            res.json(result.rows)
+            const result = await myPool.query(query);
+            res.json(result.rows);
     
         }else{
             const result = await  myPool.query(
                 `SELECT product_name, supplier_name FROM products p INNER JOIN 
                 suppliers s ON p.supplier_id = s.id`)
-            res.json(result.rows)
+            res.json(result.rows);
         }
     }catch(error){
         res
@@ -157,7 +157,7 @@ const getCustomersOrderInfoById = async (req, res )=>{
        //res.json("Successfully created")
 
     }catch(error){
-        console.log(error)
+        console.log(error);
     }
 
 }

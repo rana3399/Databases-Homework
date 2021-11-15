@@ -1,5 +1,5 @@
 const {Pool} = require('pg');
-const secret = require("./secret.json")
+const secret = require("./secret.json");
 const myPool = new Pool(secret);
 
 //show all the suppliers
@@ -17,10 +17,10 @@ function getSuppliersFunc(req, res){
 //search suppliers by their origin of country -  query parameter.
 
 const searchSupplierByCountry = async (req, res)=>{
-    const searchCountry = req.query.country
+    const searchCountry = req.query.country;
 
     const result = await myPool.query(`SELECT * FROM suppliers WHERE country = $1`, [searchCountry]);
-    res.json(result.rows)
+    res.json(result.rows);
 }
 
 
