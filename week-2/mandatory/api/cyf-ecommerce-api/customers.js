@@ -7,7 +7,6 @@ const myPool = new Pool({
     port : 5432
 })
 
-
 //show all the customers 
 function getCustomersFunc(req, res){
     myPool.query('SELECT * FROM customers', (error, result)=> {
@@ -47,7 +46,6 @@ const createNewCustomer = async (req, res)=> {
     }
 }
 
-
     //Add a new PUT endpoint `/customers/:customerId` to update an 
     //existing customer (name, address, city and country).
 
@@ -80,11 +78,24 @@ const updateCustomerById = async (req, res )=>{
 
 }
 
+
+//Add a new DELETE endpoint /customers/:customerId to delete an 
+//existing customer only if this customer doesn't have orders.
+
+const deleteCustomer = async (req, res)=>{
+    const customerId = req.params.customerId;
+
+    await myPool.query(
+        `delete from customers where id = $1`, [customerId]);
+    res.status(201).send(`Order id ${customerId} has been deleted.`)
+}
+
 module.exports={
     getCustomersFunc,
     getCustomersById,
     createNewCustomer,
-    updateCustomerById
+    updateCustomerById,
+    deleteCustomer
 }
 
 

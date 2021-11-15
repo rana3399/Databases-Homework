@@ -123,10 +123,57 @@ const updateOrder = async (req, res )=>{
     }
 }
 
+// Add a new DELETE endpoint /orders/:orderId to delete an 
+//existing order along all the associated order items.
+
+const deleteOrder = async (req, res)=>{
+    const orderId = req.params.orderId;
+
+    await myPool.query(
+        `delete from order_items where order_id = $1`, [orderId]);
+    res.status(201).send(`Order id ${orderId} has been deleted.`)
+}
+
+//Add a new GET endpoint /customers/:customerId/orders to load all the orders along 
+//the items in the orders of a specific customer. Especially, the following information 
+//should be returned: order references, order dates, product names, unit prices, suppliers and quantities.
+
+const getCustomersOrderInfoById = async (req, res )=>{
+    try{
+        const customerId = req.params.id;
+        const query = (`SELECT 
+        c.name AS searched_customer_name,
+        c.id AS searched_customer_ID,
+        o.order_reference,
+        o.order_date,
+        p.product_name,
+        P.unit_price,
+        s.supplier_name,
+        oItem.quantity
+        FROM products p 
+            INNER JOIN order_items oItem ON oItem.product_id = p.id
+            INNER JOIN orders o ON o.id = oItem.order_id
+            INNER JOIN customers c ON o.id = c.id 
+            INNER JOIN suppliers s ON s.id = p.supplier_id
+                WHERE c.id = $1`);
+
+       const result = await myPool.query(query, [customerId]);
+       res.status(201).send(`Successfully created`)
+       //res.json("Successfully created")
+
+    }catch(error){
+        console.log(error)
+    }
+
+}
+
+
 module.exports = {
     createNewProduct,
     getProductsFunc,
     createNewOrder,
-    updateOrder
+    updateOrder,
+    deleteOrder,
+    getCustomersOrderInfoById
 }
 

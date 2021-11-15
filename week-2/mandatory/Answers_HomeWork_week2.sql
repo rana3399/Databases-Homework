@@ -91,3 +91,28 @@ SELECT c.name as customers_bought_from_China
 INSERT INTO products (product_name, unit_price, supplier_id) 
         VALUES ('Samsung Phone', 20, 1) returning id;
 
+--// Add a new DELETE endpoint /orders/:orderId to delete an 
+--//existing order along all the associated order items.
+delete from order_items where order_id = 9
+SELECT * FROM orders;
+
+--
+SELECT exists (DELETE FROM orders WHERE customer_id = 5);
+SELECT exists (SELECT 1 FROM table WHERE column = <value> LIMIT 1);
+
+--
+SELECT c.name AS searched_customer_name,
+    c.id AS searched_customer_ID
+    o.order_reference,
+    o.order_date,
+    p.product_name,
+    P.unit_price,
+    s.supplier_name,
+    oItem.quantity
+  FROM products p 
+    INNER JOIN order_items oItem ON oItem.product_id = p.id
+    INNER JOIN orders o ON o.id = oItem.order_id
+    INNER JOIN customers c ON o.id = c.id 
+    INNER JOIN suppliers s ON s.id = p.supplier_id
+        WHERE c.id = 4
+
