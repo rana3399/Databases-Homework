@@ -1,12 +1,6 @@
 const {Pool} = require('pg');
-const myPool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Week2_homeWork',
-    password: 'Pro@450',
-    port : 5432
-
-});
+const secret = require("./secret.json")
+const myPool = new Pool(secret);
 
 //show all the suppliers
 function getSuppliersFunc(req, res){
@@ -28,6 +22,8 @@ const searchSupplierByCountry = async (req, res)=>{
     const result = await myPool.query(`SELECT * FROM suppliers WHERE country = $1`, [searchCountry]);
     res.json(result.rows)
 }
+
+
 
 module.exports={
     getSuppliersFunc,

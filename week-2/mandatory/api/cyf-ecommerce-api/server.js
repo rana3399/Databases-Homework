@@ -24,13 +24,8 @@ const {
 } = require("./suppliers")
 
 const {Pool} = require('pg');
-const myPool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Week2_homeWork',
-    password: 'Pro@450',
-    port : 5432
-})
+const secret = require("./secret.json")
+const myPool = new Pool(secret);
 
 app.use(express.json())
 

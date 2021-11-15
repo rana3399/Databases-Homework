@@ -1,11 +1,6 @@
 const {Pool} = require('pg');
-const myPool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Week2_homeWork',
-    password: 'Pro@450',
-    port : 5432
-})
+const secret = require("./secret.json")
+const myPool = new Pool(secret)
 
 //show all the customers 
 function getCustomersFunc(req, res){
@@ -87,7 +82,7 @@ const deleteCustomer = async (req, res)=>{
 
     await myPool.query(
         `delete from customers where id = $1`, [customerId]);
-    res.status(201).send(`Order id ${customerId} has been deleted.`)
+    res.status(201).send(`Customer id ${customerId} has been deleted.`)
 }
 
 module.exports={

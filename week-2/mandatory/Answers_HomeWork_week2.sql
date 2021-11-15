@@ -39,7 +39,7 @@ SELECT
 --7. Retrieve all the products sold by suppliers based in the United Kingdom. The result 
     --should only contain the columns `product_name` and `supplier_name`.
 SELECT 
-    p.product_name,  
+    p.product_name,
     s.supplier_name 
         FROM products p INNER JOIN 
         suppliers s ON p.supplier_id = s.id
@@ -100,9 +100,9 @@ SELECT * FROM orders;
 SELECT exists (DELETE FROM orders WHERE customer_id = 5);
 SELECT exists (SELECT 1 FROM table WHERE column = <value> LIMIT 1);
 
---
+-- Raff
 SELECT c.name AS searched_customer_name,
-    c.id AS searched_customer_ID
+    c.id AS searched_customer_ID,
     o.order_reference,
     o.order_date,
     p.product_name,
