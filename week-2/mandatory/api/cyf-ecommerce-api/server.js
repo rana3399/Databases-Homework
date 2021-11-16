@@ -6,7 +6,8 @@ const {
     getCustomersFunc,
     getCustomersById,
     createNewCustomer,
-    updateCustomerById    
+    updateCustomerById,
+    deleteCustomerById   
 } = require("./customers")
 
 const {  
@@ -44,7 +45,9 @@ app.use(express.json())
  app.get("/products", getProductsFunc)
  app.post("/products", createNewProduct)
 
- app.delete("/orders/:orderId", deleteOrder)
+ app.delete("/orders/:orderId", deleteOrder);
+ app.delete("/customers/:customerId", deleteCustomerById);
+ 
 
 const port  = 4000;
 app.listen (port, () => console.log(`app listening to port: ${port}`));

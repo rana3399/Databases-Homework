@@ -85,12 +85,48 @@ const deleteCustomer = async (req, res)=>{
     res.status(201).send(`Customer id ${customerId} has been deleted.`)
 }
 
+//Add a new DELETE endpoint /customers/:customerId to delete an existing 
+//customer only if this customer doesn't have orders.
+
+const deleteCustomerById = async (req, res ) =>{
+    try{
+    const customerId = req.params.customerId;
+    const findOrdersQuery = `SELECT * FROM orders WHERE customer_id = $1`;
+
+    const ordersResult = await myPool.query(findOrdersQuery, [customerId]);
+    
+    const isOrderExist = ordersResult.rows;
+    console.log(ordersResult.rows.length);
+
+    if(isOrderExist.length > 0){
+        res
+        .status(201)
+        .send(`Customer id ${customerId} has orders, are you sure you wanna delete it?.`);
+    }else{   
+        const deleteCustomer = `DELETE FROM customers WHERE id = $1`;
+        const deleteOrders = `DELETE FROM orders WHERE customer_id = $1`;
+
+        await myPool.query(deleteCustomer, [customerId]);
+        await myPool.query(deleteOrders, [customerId]);
+
+        res
+        .status(201)
+        .send(`Customer id ${customerId} has been deleted successfully.`)
+
+    } 
+
+    }catch(error){
+        console.log('There is a problem, please try again later');
+    }  
+} 
+
 module.exports={
     getCustomersFunc,
     getCustomersById,
     createNewCustomer,
     updateCustomerById,
-    deleteCustomer
+    deleteCustomer,
+    deleteCustomerById
 }
 
 

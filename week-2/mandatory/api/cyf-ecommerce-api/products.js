@@ -2,32 +2,48 @@ const {Pool} = require('pg');
 const secret = require("./secret.json");
 const myPool = new Pool(secret);
 
-//Create a new product
+//Add a new POST endpoint /products to create a new product (with a product name, a 
+//price and a supplier id). Check that the price is a positive integer and that the 
+//supplier ID exists in the database, otherwise return an error.
 
 const createNewProduct= async (req, res)=> {
     try{
-        const productBody = req.body;
-        console.log(productBody);
+        const productName = req.body.product_name;
+        const productPrice = req.body.unit_price;
+        const supplierId = req.body.supplier_id;
 
-        const query = (`INSERT INTO products (product_name, unit_price, supplier_id) 
-        VALUES ($1, $2, $3) returning id `);
+        const findSupplierIdQuery = `SELECT * FROM suppliers WHERE id = $1`;
+        const findSupplierId = await myPool.query(findSupplierIdQuery,  [supplierId]);
 
-        const result = await myPool.query(query, 
-            [productBody.product_name,
-            productBody.unit_price,
-            productBody.supplier_id]);
 
-        console.log(result.rows);
+        if(!Number.isInteger(productPrice) && !Number.isInteger(supplierId)){
+            res.status(400).send('Price and Supplier id must be a number.');
 
-        res.send(`A new product, Product ID: ${result.rows[0].id},  
-        name: ${productBody.product_name},
-        Price: ${productBody.unit_price} 
-        has been created`);
+        }else if(findSupplierId.rows.length < 1){
+            res.status(400).send('Supplier id doesent exist.');
+        }
         
+        else{
+            const query = (`INSERT INTO products (product_name, unit_price, supplier_id) 
+            VALUES ($1, $2, $3) returning id `);
+    
+            const result = await myPool.query(query, 
+                [productName,
+                productPrice,
+                supplierId]);
+    
+            res.send(`A new product, Product ID: ${result.rows[0].id},  
+            name: ${productName},
+            Price: ${productPrice} 
+            has been created`);
+        }
 
     }catch(error){
+        res
+        .status(500)
+        .send('Something went wrong! Please try again later.')
         console.log(error);
-    }
+    } 
 }
 
 //show products and suppliers name AND query by products name
@@ -51,18 +67,14 @@ const getProductsFunc = async (req, res )=>{
         res
         .status(500)
         .send('Try again later.')
-    }
-    
+    }   
 };
 
         //Add a new POST endpoint /customers/:customerId/orders
 const createNewOrder = async (req, res )=>{
     try{
         const orderBody = req.body;
-        console.log(orderBody);
-
         const customerId = req.params.id;
-        console.log(customerId);
 
         const query = (`INSERT INTO orders (order_date, order_reference, customer_id) 
         VALUES ($1, $2, $3) returning id `);
@@ -72,8 +84,7 @@ const createNewOrder = async (req, res )=>{
             orderBody.order_reference,
             customerId]);
 
-        console.log(result.rows);
-
+        //console.log(result.rows);
         res.json(`A new order, order ID: ${result.rows[0].id},  
         order-date: ${orderBody.order_date},
         order-ref: ${orderBody.order_reference} 
@@ -82,18 +93,15 @@ const createNewOrder = async (req, res )=>{
     }catch(error){
         console.log(error);
     }
-
 }
 
     //  Add a new POST endpoint /customers/:customerId/orders
 const updateOrder = async (req, res )=>{
     try{
         const orderBody = req.body;
-        console.log(orderBody);
+
 
         const customerId = req.params.customerId;
-        console.log(customerId);
-
         const query = (`INSERT INTO orders (order_date, order_reference, customer_id) 
         VALUES ($1, $2, $3) returning id `);
 
@@ -101,8 +109,6 @@ const updateOrder = async (req, res )=>{
             [orderBody.order_date,
             orderBody.order_reference,
             customerId]);
-
-        console.log(result.rows);
 
         res.json(`A new order, order ID: ${result.rows[0].id},  
         order-date: ${orderBody.order_date},
@@ -128,6 +134,7 @@ const deleteOrder = async (req, res)=>{
         `delete from order_items where order_id = $1`, [orderId]);
     res.status(201).send(`Order id ${orderId} has been deleted.`)
 }
+
 
 //Add a new GET endpoint /customers/:customerId/orders to load all the orders along 
 //the items in the orders of a specific customer. Especially, the following information 
@@ -161,7 +168,6 @@ const getCustomersOrderInfoById = async (req, res )=>{
     }
 
 }
-
 
 module.exports = {
     createNewProduct,
